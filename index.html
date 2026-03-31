@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GROWW — Dominate Social Media</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --bg:#05050a;
+  --surface:#0d0d18;
+  --card:#12121f;
+  --border:#1e1e35;
+  --white:#f0eeff;
+  --muted:rgba(240,238,255,0.45);
+  --lime:#b8ff00;
+  --purple:#7c3aed;
+  --pink:#ff2d78;
+  --cyan:#00e5ff;
+  --gold:#ffd700;
+}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--white);font-family:'Outfit',sans-serif;overflow-x:hidden;cursor:none;}
+
+/* ── CURSOR ── */
+#cur{width:8px;height:8px;background:var(--lime);border-radius:50%;position:fixed;pointer-events:none;z-index:9999;transition:transform .1s;}
+#cur2{width:32px;height:32px;border:1.5px solid var(--lime);border-radius:50%;position:fixed;pointer-events:none;z-index:9998;transition:all .25s ease;opacity:.6;}
+body:hover #cur{transform:scale(1);}
+
+/* ── NOISE OVERLAY ── */
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:1;opacity:.4;}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:500;padding:0 48px;height:72px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,0.04);backdrop-filter:blur(24px);background:rgba(5,5,10,0.85);}
+.logo{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:6px;background:linear-gradient(135deg,var(--lime),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.nav-links{display:flex;gap:40px;list-style:none;}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:13px;font-weight:500;letter-spacing:.5px;transition:color .2s;}
+.nav-links a:hover{color:var(--white);}
+.nav-btn{background:var(--lime);color:#000;padding:10px 24px;font-family:'Space Mono',monospace;font-size:11px;font-weight:700;letter-spacing:1.5px;border:none;cursor:none;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);transition:all .2s;}
+.nav-btn:hover{background:var(--cyan);transform:scale(1.03);}
+
+/* ── HERO ── */
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:120px 48px 80px;position:relative;overflow:hidden;}
+
+/* Animated gradient orbs */
+.orb{position:absolute;border-radius:50%;filter:blur(120px);pointer-events:none;animation:orbFloat 8s ease-in-out infinite;}
+.orb1{width:600px;height:600px;background:radial-gradient(circle,rgba(124,58,237,.25),transparent 70%);top:-100px;right:-100px;animation-delay:0s;}
+.orb2{width:500px;height:500px;background:radial-gradient(circle,rgba(0,229,255,.15),transparent 70%);bottom:-50px;left:-100px;animation-delay:-3s;}
+.orb3{width:400px;height:400px;background:radial-gradient(circle,rgba(184,255,0,.12),transparent 70%);top:40%;left:40%;animation-delay:-5s;}
+@keyframes orbFloat{0%,100%{transform:translate(0,0) scale(1);}33%{transform:translate(30px,-20px) scale(1.05);}66%{transform:translate(-20px,30px) scale(.97);}}
+
+.hero-inner{position:relative;z-index:2;max-width:1200px;margin:0 auto;width:100%;display:grid;grid-template-columns:1fr 420px;gap:80px;align-items:center;}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:10px;background:rgba(184,255,0,.07);border:1px solid rgba(184,255,0,.2);padding:8px 18px;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:3px;color:var(--lime);margin-bottom:36px;animation:fadeUp .8s ease both;}
+.hero-eyebrow span{width:6px;height:6px;background:var(--lime);border-radius:50%;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.4;transform:scale(.6);}}
+.hero h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(72px,9vw,128px);line-height:.92;letter-spacing:2px;animation:fadeUp .8s .1s ease both;}
+.h1-line1{display:block;}
+.h1-grad{background:linear-gradient(135deg,var(--lime) 0%,var(--cyan) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.h1-outline{-webkit-text-stroke:1.5px rgba(240,238,255,.3);-webkit-text-fill-color:transparent;}
+.hero-sub{font-size:18px;line-height:1.7;color:var(--muted);max-width:520px;margin-top:28px;animation:fadeUp .8s .2s ease both;}
+.hero-sub strong{color:var(--white);font-weight:600;}
+.hero-actions{display:flex;gap:16px;margin-top:48px;flex-wrap:wrap;animation:fadeUp .8s .3s ease both;}
+.btn-glow{display:inline-flex;align-items:center;gap:10px;background:var(--lime);color:#000;padding:18px 44px;font-family:'Space Mono',monospace;font-size:12px;font-weight:700;letter-spacing:1.5px;text-decoration:none;clip-path:polygon(12px 0%,100% 0%,calc(100% - 12px) 100%,0% 100%);transition:all .25s;box-shadow:0 0 40px rgba(184,255,0,.3);}
+.btn-glow:hover{background:var(--cyan);box-shadow:0 0 60px rgba(0,229,255,.4);transform:translateY(-3px);}
+.btn-ghost{display:inline-flex;align-items:center;gap:10px;border:1px solid var(--border);color:var(--white);padding:18px 44px;font-family:'Space Mono',monospace;font-size:12px;letter-spacing:1.5px;text-decoration:none;transition:all .25s;}
+.btn-ghost:hover{border-color:rgba(184,255,0,.4);color:var(--lime);}
+.hero-proof{display:flex;gap:40px;margin-top:56px;animation:fadeUp .8s .4s ease both;}
+.proof-item{}
+.proof-num{font-family:'Bebas Neue',sans-serif;font-size:44px;background:linear-gradient(135deg,var(--white),var(--muted));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.proof-label{font-size:12px;color:var(--muted);font-family:'Space Mono',monospace;letter-spacing:1px;}
+
+/* Hero right card */
+.hero-card{background:var(--card);border:1px solid var(--border);padding:0;overflow:hidden;position:relative;animation:fadeUp .8s .5s ease both;}
+.hero-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(124,58,237,.08),rgba(0,229,255,.05));pointer-events:none;}
+.card-header{padding:24px 28px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.card-title{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:2px;color:var(--lime);}
+.card-dot{width:8px;height:8px;background:#ff2d78;border-radius:50%;box-shadow:0 0 8px #ff2d78;}
+.growth-chart{padding:28px;display:flex;flex-direction:column;gap:16px;}
+.chart-bar-wrap{display:flex;align-items:center;gap:14px;}
+.chart-label{font-size:11px;color:var(--muted);font-family:'Space Mono',monospace;width:90px;flex-shrink:0;}
+.chart-track{flex:1;height:8px;background:var(--border);border-radius:4px;overflow:hidden;}
+.chart-fill{height:100%;border-radius:4px;animation:barGrow 1.5s ease both;}
+@keyframes barGrow{from{width:0;}to{width:var(--w);}}
+.chart-val{font-size:11px;font-family:'Space Mono',monospace;color:var(--white);width:44px;text-align:right;flex-shrink:0;}
+.card-stat-row{padding:20px 28px;border-top:1px solid var(--border);display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.mini-stat-label{font-size:10px;color:var(--muted);font-family:'Space Mono',monospace;letter-spacing:1px;margin-bottom:4px;}
+.mini-stat-val{font-family:'Bebas Neue',sans-serif;font-size:30px;color:var(--lime);}
+.mini-stat-val.pink{color:var(--pink);}
+
+/* ── TICKER ── */
+.ticker-wrap{overflow:hidden;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--surface);padding:14px 0;position:relative;z-index:2;}
+.ticker{display:flex;gap:48px;animation:ticker 25s linear infinite;white-space:nowrap;}
+.ticker-item{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:4px;color:rgba(240,238,255,.15);display:flex;align-items:center;gap:48px;}
+.ticker-item .dot{width:5px;height:5px;background:var(--lime);border-radius:50%;flex-shrink:0;}
+@keyframes ticker{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+
+/* ── SECTIONS ── */
+.section{padding:120px 48px;position:relative;z-index:2;}
+.section-inner{max-width:1200px;margin:0 auto;}
+.s-tag{display:inline-flex;align-items:center;gap:8px;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:3px;color:var(--lime);margin-bottom:20px;}
+.s-tag::before{content:'';width:24px;height:1px;background:var(--lime);}
+.s-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(48px,6vw,80px);line-height:.95;letter-spacing:1px;margin-bottom:16px;}
+.s-sub{font-size:17px;color:var(--muted);line-height:1.7;max-width:560px;}
+
+/* ── WHO IT'S FOR ── */
+.who-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:60px;}
+.who-card{background:var(--card);border:1px solid var(--border);padding:48px 36px;position:relative;overflow:hidden;transition:all .3s ease;cursor:none;}
+.who-card::before{content:'';position:absolute;inset:0;opacity:0;transition:opacity .3s;}
+.who-card:nth-child(1)::before{background:linear-gradient(135deg,rgba(124,58,237,.08),transparent);}
+.who-card:nth-child(2)::before{background:linear-gradient(135deg,rgba(184,255,0,.06),transparent);}
+.who-card:nth-child(3)::before{background:linear-gradient(135deg,rgba(0,229,255,.07),transparent);}
+.who-card:hover{border-color:rgba(255,255,255,.1);transform:translateY(-6px);}
+.who-card:hover::before{opacity:1;}
+.who-icon{font-size:48px;margin-bottom:28px;display:block;}
+.who-title{font-family:'Bebas Neue',sans-serif;font-size:36px;letter-spacing:1px;margin-bottom:16px;}
+.who-desc{font-size:15px;color:var(--muted);line-height:1.7;}
+.who-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:24px;}
+.who-tag{background:var(--border);padding:6px 14px;font-family:'Space Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:1px;}
+
+/* ── PACKAGES ── */
+.pkg-section{background:var(--surface);}
+.pkg-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:64px;}
+.pkg-card{background:var(--card);border:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden;transition:all .3s;position:relative;}
+.pkg-card.hot{border-color:rgba(184,255,0,.3);transform:translateY(-8px);}
+.pkg-badge{background:var(--lime);color:#000;font-family:'Space Mono',monospace;font-size:10px;font-weight:700;letter-spacing:2px;padding:10px 20px;text-align:center;}
+.pkg-top{padding:40px 36px 32px;}
+.pkg-tier{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:3px;color:var(--muted);margin-bottom:12px;}
+.pkg-name{font-family:'Bebas Neue',sans-serif;font-size:52px;letter-spacing:1px;line-height:1;margin-bottom:16px;}
+.pkg-name.lime{color:var(--lime);}
+.pkg-name.cyan{color:var(--cyan);}
+.pkg-name.pink{color:var(--pink);}
+.pkg-tagline{font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:32px;}
+.pkg-price{display:flex;align-items:baseline;gap:4px;margin-bottom:8px;}
+.pkg-price-amt{font-family:'Bebas Neue',sans-serif;font-size:64px;line-height:1;}
+.pkg-price-curr{font-family:'Space Mono',monospace;font-size:16px;color:var(--muted);margin-bottom:8px;}
+.pkg-price-note{font-size:12px;color:var(--muted);font-family:'Space Mono',monospace;letter-spacing:1px;}
+.pkg-divider{height:1px;background:var(--border);margin:32px 36px;}
+.pkg-features{padding:0 36px 36px;flex:1;}
+.pkg-feat{display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:14px;color:rgba(240,238,255,.8);}
+.pkg-feat:last-child{border:none;}
+.feat-icon{width:20px;height:20px;background:rgba(184,255,0,.1);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0;color:var(--lime);margin-top:1px;}
+.pkg-cta{margin:0 36px 36px;}
+.cta-btn{display:block;text-align:center;padding:18px;font-family:'Space Mono',monospace;font-size:12px;font-weight:700;letter-spacing:2px;text-decoration:none;transition:all .25s;border:1px solid var(--border);color:var(--white);background:transparent;cursor:none;width:100%;}
+.cta-btn.filled{background:var(--lime);color:#000;border-color:var(--lime);}
+.cta-btn.filled:hover{background:var(--cyan);border-color:var(--cyan);}
+.cta-btn:not(.filled):hover{border-color:rgba(184,255,0,.4);color:var(--lime);}
+
+/* ── WHAT'S INSIDE ── */
+.inside-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;margin-top:64px;}
+.inside-card{background:var(--card);border:1px solid var(--border);padding:36px 28px;transition:all .3s;}
+.inside-card:hover{border-color:rgba(184,255,0,.2);transform:translateY(-4px);}
+.inside-num{font-family:'Bebas Neue',sans-serif;font-size:72px;color:rgba(184,255,0,.07);line-height:1;margin-bottom:12px;}
+.inside-icon{font-size:32px;margin-bottom:20px;display:block;}
+.inside-title{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:1px;margin-bottom:12px;}
+.inside-desc{font-size:13px;color:var(--muted);line-height:1.7;}
+
+/* ── HOW IT WORKS ── */
+.how-section{background:var(--surface);}
+.how-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:64px;position:relative;}
+.how-steps::before{content:'';position:absolute;top:32px;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--border),var(--border),transparent);}
+.how-step{padding:0 32px;position:relative;}
+.step-circle{width:64px;height:64px;background:var(--card);border:1px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--lime);margin-bottom:28px;position:relative;z-index:1;}
+.step-circle.active{background:var(--lime);color:#000;box-shadow:0 0 32px rgba(184,255,0,.3);}
+.step-title{font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:1px;margin-bottom:12px;}
+.step-desc{font-size:13px;color:var(--muted);line-height:1.7;}
+
+/* ── RESULTS ── */
+.results-section{}
+.results-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-top:64px;}
+.result-card{background:var(--card);border:1px solid var(--border);padding:48px;position:relative;overflow:hidden;transition:all .3s;}
+.result-card:hover{border-color:rgba(255,255,255,.08);}
+.result-card.big{grid-column:1;grid-row:1/3;}
+.result-stars{color:var(--gold);font-size:16px;letter-spacing:4px;margin-bottom:24px;}
+.result-quote{font-size:18px;line-height:1.7;color:var(--white);margin-bottom:32px;font-style:italic;}
+.result-quote.sm{font-size:15px;}
+.result-author{display:flex;align-items:center;gap:16px;}
+.author-av{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:20px;border:1px solid var(--border);}
+.av-purple{background:rgba(124,58,237,.2);color:#a78bfa;}
+.av-lime{background:rgba(184,255,0,.1);color:var(--lime);}
+.av-cyan{background:rgba(0,229,255,.1);color:var(--cyan);}
+.av-pink{background:rgba(255,45,120,.1);color:var(--pink);}
+.author-info{}
+.author-name{font-weight:700;font-size:15px;margin-bottom:2px;}
+.author-sub{font-size:12px;color:var(--muted);font-family:'Space Mono',monospace;}
+.result-stat{position:absolute;top:48px;right:48px;text-align:right;}
+.r-stat-num{font-family:'Bebas Neue',sans-serif;font-size:52px;color:var(--lime);line-height:1;}
+.r-stat-label{font-size:11px;color:var(--muted);font-family:'Space Mono',monospace;}
+
+/* ── PLATFORMS ── */
+.platforms-section{background:var(--surface);}
+.platforms-grid{display:flex;flex-wrap:wrap;gap:2px;margin-top:48px;}
+.platform{background:var(--card);border:1px solid var(--border);padding:24px 32px;display:flex;align-items:center;gap:16px;flex:1;min-width:200px;transition:all .3s;cursor:none;}
+.platform:hover{border-color:rgba(184,255,0,.2);transform:translateY(-3px);}
+.platform-emoji{font-size:28px;}
+.platform-name{font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:1px;}
+
+/* ── CTA ── */
+.cta-section{position:relative;overflow:hidden;padding:140px 48px;}
+.cta-bg{position:absolute;inset:0;background:linear-gradient(135deg,rgba(124,58,237,.15),rgba(184,255,0,.08),rgba(0,229,255,.1));pointer-events:none;}
+.cta-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);background-size:60px 60px;pointer-events:none;}
+.cta-inner{position:relative;z-index:2;text-align:center;max-width:800px;margin:0 auto;}
+.cta-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(56px,8vw,100px);line-height:.95;letter-spacing:2px;margin-bottom:28px;}
+.cta-desc{font-size:18px;color:var(--muted);line-height:1.7;margin-bottom:56px;}
+.cta-btns{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;}
+
+/* ── FOOTER ── */
+footer{background:var(--surface);border-top:1px solid var(--border);padding:80px 48px 0;}
+.footer-grid{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:2.5fr 1fr 1fr 1fr;gap:80px;padding-bottom:60px;}
+.footer-logo{font-family:'Bebas Neue',sans-serif;font-size:36px;letter-spacing:6px;background:linear-gradient(135deg,var(--lime),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:20px;}
+.footer-desc{font-size:14px;color:var(--muted);line-height:1.8;max-width:300px;margin-bottom:32px;}
+.footer-socials{display:flex;gap:12px;}
+.social-btn{width:38px;height:38px;background:var(--card);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:14px;transition:all .2s;cursor:none;}
+.social-btn:hover{border-color:rgba(184,255,0,.3);background:rgba(184,255,0,.05);}
+.footer-col h5{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:3px;color:var(--lime);margin-bottom:24px;}
+.footer-col ul{list-style:none;display:flex;flex-direction:column;gap:12px;}
+.footer-col a{color:var(--muted);text-decoration:none;font-size:14px;transition:color .2s;}
+.footer-col a:hover{color:var(--white);}
+.footer-bottom{border-top:1px solid var(--border);padding:24px 0;max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;}
+.footer-bottom p{font-size:11px;color:rgba(240,238,255,.2);font-family:'Space Mono',monospace;}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(32px);}to{opacity:1;transform:translateY(0);}}
+.reveal{opacity:0;transform:translateY(40px);transition:opacity .7s ease,transform .7s ease;}
+.reveal.in{opacity:1;transform:translateY(0);}
+.reveal-delay-1{transition-delay:.1s;}
+.reveal-delay-2{transition-delay:.2s;}
+.reveal-delay-3{transition-delay:.3s;}
+.reveal-delay-4{transition-delay:.4s;}
+
+/* ── RESPONSIVE ── */
+@media(max-width:960px){
+  .hero-inner,.who-grid,.pkg-grid,.inside-grid,.how-steps,.results-grid,.footer-grid{grid-template-columns:1fr;}
+  .pkg-card.hot{transform:none;}
+  .result-card.big{grid-column:auto;grid-row:auto;}
+  .how-steps::before{display:none;}
+  nav{padding:0 24px;}
+  .nav-links{display:none;}
+  .section{padding:80px 24px;}
+  .hero{padding:120px 24px 80px;}
+}
+</style>
+</head>
+<body>
+
+<div id="cur"></div>
+<div id="cur2"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">GROWW</div>
+  <ul class="nav-links">
+    <li><a href="#who">Who It's For</a></li>
+    <li><a href="#packages">Packages</a></li>
+    <li><a href="#results">Results</a></li>
+    <li><a href="#how">How It Works</a></li>
+  </ul>
+  <button class="nav-btn" onclick="document.getElementById('packages').scrollIntoView({behavior:'smooth'})">GET STARTED →</button>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+  <div class="orb orb3"></div>
+  <div class="hero-inner">
+    <div>
+      <div class="hero-eyebrow"><span></span>THE #1 SOCIAL MEDIA GROWTH SYSTEM</div>
+      <h1>
+        <span class="h1-line1">STOP</span>
+        <span class="h1-grad">POSTING</span><br>
+        <span class="h1-outline">IN THE</span><br>
+        <span class="h1-line1">DARK.</span>
+      </h1>
+      <p class="hero-sub">Proven digital products, done-for-you templates & growth strategies that turn <strong>any account</strong> into an audience — and that audience into <strong>income</strong>.</p>
+      <div class="hero-actions">
+        <a href="#packages" class="btn-glow">CHOOSE YOUR PLAN <span>→</span></a>
+        <a href="#results" class="btn-ghost">SEE REAL RESULTS</a>
+      </div>
+      <div class="hero-proof">
+        <div class="proof-item">
+          <div class="proof-num" id="cnt1">0</div>
+          <div class="proof-label">CLIENTS SERVED</div>
+        </div>
+        <div class="proof-item">
+          <div class="proof-num" id="cnt2">0M+</div>
+          <div class="proof-label">FOLLOWERS GAINED</div>
+        </div>
+        <div class="proof-item">
+          <div class="proof-num" id="cnt3">0%</div>
+          <div class="proof-label">SATISFACTION RATE</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-card">
+      <div class="card-header">
+        <span class="card-title">// LIVE GROWTH METRICS</span>
+        <span class="card-dot"></span>
+      </div>
+      <div class="growth-chart">
+        <div class="chart-bar-wrap">
+          <span class="chart-label">Instagram</span>
+          <div class="chart-track"><div class="chart-fill" style="--w:88%;background:linear-gradient(90deg,#833ab4,#fd1d1d,#fcb045);"></div></div>
+          <span class="chart-val">+8.8K</span>
+        </div>
+        <div class="chart-bar-wrap">
+          <span class="chart-label">TikTok</span>
+          <div class="chart-track"><div class="chart-fill" style="--w:95%;background:linear-gradient(90deg,#00f2ea,#ff0050);animation-delay:.1s"></div></div>
+          <span class="chart-val">+24K</span>
+        </div>
+        <div class="chart-bar-wrap">
+          <span class="chart-label">YouTube</span>
+          <div class="chart-track"><div class="chart-fill" style="--w:62%;background:linear-gradient(90deg,#ff0000,#ff6b6b);animation-delay:.2s"></div></div>
+          <span class="chart-val">+3.2K</span>
+        </div>
+        <div class="chart-bar-wrap">
+          <span class="chart-label">LinkedIn</span>
+          <div class="chart-track"><div class="chart-fill" style="--w:74%;background:linear-gradient(90deg,#0077b5,#00c6ff);animation-delay:.3s"></div></div>
+          <span class="chart-val">+5.6K</span>
+        </div>
+        <div class="chart-bar-wrap">
+          <span class="chart-label">Facebook</span>
+          <div class="chart-track"><div class="chart-fill" style="--w:55%;background:linear-gradient(90deg,#1877f2,#42a5f5);animation-delay:.4s"></div></div>
+          <span class="chart-val">+2.9K</span>
+        </div>
+      </div>
+      <div class="card-stat-row">
+        <div>
+          <div class="mini-stat-label">AVG ENGAGEMENT</div>
+          <div class="mini-stat-val">8.4%</div>
+        </div>
+        <div>
+          <div class="mini-stat-label">AVG TIME TO RESULTS</div>
+          <div class="mini-stat-val pink">14 DAYS</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker" id="tick">
+    <span class="ticker-item">INSTAGRAM<span class="dot"></span></span>
+    <span class="ticker-item">TIKTOK<span class="dot"></span></span>
+    <span class="ticker-item">YOUTUBE<span class="dot"></span></span>
+    <span class="ticker-item">LINKEDIN<span class="dot"></span></span>
+    <span class="ticker-item">FACEBOOK<span class="dot"></span></span>
+    <span class="ticker-item">TWITTER / X<span class="dot"></span></span>
+    <span class="ticker-item">PINTEREST<span class="dot"></span></span>
+    <span class="ticker-item">THREADS<span class="dot"></span></span>
+    <span class="ticker-item">INSTAGRAM<span class="dot"></span></span>
+    <span class="ticker-item">TIKTOK<span class="dot"></span></span>
+    <span class="ticker-item">YOUTUBE<span class="dot"></span></span>
+    <span class="ticker-item">LINKEDIN<span class="dot"></span></span>
+    <span class="ticker-item">FACEBOOK<span class="dot"></span></span>
+    <span class="ticker-item">TWITTER / X<span class="dot"></span></span>
+    <span class="ticker-item">PINTEREST<span class="dot"></span></span>
+    <span class="ticker-item">THREADS<span class="dot"></span></span>
+  </div>
+</div>
+
+<!-- WHO IT'S FOR -->
+<section class="section" id="who">
+  <div class="section-inner">
+    <div class="s-tag">WHO IT'S FOR</div>
+    <div class="s-title">BUILT FOR<br><span style="background:linear-gradient(135deg,var(--lime),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">EVERYONE</span><br>WHO POSTS.</div>
+    <div class="who-grid">
+      <div class="who-card reveal">
+        <span class="who-icon">🏢</span>
+        <div class="who-title">BUSINESSES</div>
+        <div class="who-desc">Turn your social media into a sales machine. Get more customers, build trust and grow your brand online — even with zero marketing experience.</div>
+        <div class="who-tags">
+          <span class="who-tag">RETAIL</span>
+          <span class="who-tag">SALONS</span>
+          <span class="who-tag">RESTAURANTS</span>
+          <span class="who-tag">AGENCIES</span>
+          <span class="who-tag">FREELANCERS</span>
+        </div>
+      </div>
+      <div class="who-card reveal reveal-delay-1">
+        <span class="who-icon">🎬</span>
+        <div class="who-title">CREATORS</div>
+        <div class="who-desc">Stop guessing what to post. Get the exact scripts, hooks and strategies that are going viral right now — and turn your passion into a full-time income.</div>
+        <div class="who-tags">
+          <span class="who-tag">INFLUENCERS</span>
+          <span class="who-tag">YOUTUBERS</span>
+          <span class="who-tag">TIKTOKERS</span>
+          <span class="who-tag">PODCASTERS</span>
+        </div>
+      </div>
+      <div class="who-card reveal reveal-delay-2">
+        <span class="who-icon">✨</span>
+        <div class="who-title">PERSONAL BRANDS</div>
+        <div class="who-desc">Whether you're a coach, speaker, professional or just building your name — we give you the tools to stand out and attract the right people to you.</div>
+        <div class="who-tags">
+          <span class="who-tag">COACHES</span>
+          <span class="who-tag">SPEAKERS</span>
+          <span class="who-tag">CONSULTANTS</span>
+          <span class="who-tag">ARTISTS</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PACKAGES -->
+<section class="section pkg-section" id="packages">
+  <div class="section-inner">
+    <div class="s-tag">PRICING</div>
+    <div class="s-title">PICK YOUR<br>WEAPON.</div>
+    <div class="s-sub">Every package is a complete, done-for-you digital toolkit. Download instantly. Use forever.</div>
+    <div class="pkg-grid">
+
+      <!-- SPARK -->
+      <div class="pkg-card reveal">
+        <div class="pkg-top">
+          <div class="pkg-tier">TIER 01 — STARTER</div>
+          <div class="pkg-name lime">SPARK</div>
+          <div class="pkg-tagline">Everything you need to stop wasting time and start posting with a real strategy.</div>
+          <div class="pkg-price">
+            <span class="pkg-price-curr">R</span>
+            <span class="pkg-price-amt">499</span>
+          </div>
+          <div class="pkg-price-note">ONE-TIME PAYMENT · INSTANT DOWNLOAD</div>
+        </div>
+        <div class="pkg-divider"></div>
+        <div class="pkg-features">
+          <div class="pkg-feat"><div class="feat-icon">✓</div>30-Day Content Calendar Template</div>
+          <div class="pkg-feat"><div class="feat-icon">✓</div>50 Done-For-You Captions (Any Niche)</div>
+          <div class="pkg-feat"><div class="feat-icon">✓</div>Ultimate Hashtag Strategy Guide</div>
+          <div class="pkg-feat"><div class="feat-icon">✓</div>Profile Optimisation Checklist (All Platforms)</div>
+          <div class="pkg-feat"><div class="feat-icon">✓</div>Posting Time Cheat Sheet</div>
+          <div class="pkg-feat"><div class="feat-icon">✓</div>2 Platform Coverage</div>
+        </div>
+        <div class="pkg-cta"><a href="#" class="cta-btn">GET SPARK →</a></div>
+      </div>
+
+      <!-- BLAZE -->
+      <div class="pkg-card hot reveal reveal-delay-1">
+        <div class="pkg-badge">⚡ MOST POPULAR — BEST VALUE</div>
+        <div class="pkg-top">
+          <div class="pkg-tier">TIER 02 — GROWTH</div>
+          <div class="pkg-name cyan">BLAZE</div>
+          <div class="pkg-tagline">The full growth system. Everything in Spark PLUS the tools that actually make accounts go viral.</div>
+          <div class="pkg-price">
+            <span class="pkg-price-curr">R</span>
+            <span class="pkg-price-amt">1,299</span>
+          </div>
+          <div class="pkg-price-note">ONE-TIME PAYMENT · INSTANT DOWNLOAD</div>
+        </div>
+        <div class="pkg-divider"></div>
+        <div class="pkg-features">
+          <div class="pkg-feat"><div class="feat-icon">✓</div>Everything in SPARK</div>
+          <div class="pkg-feat"><div class="feat-icon">✓</div>90-Day Content Strategy Blueprint</div>
+          <div class="pkg-feat"><div class="feat-icon">✓</div>200 Caption Swipe File (Niche-Specific)</div>
+          <div class="pkg-feat"><div class="feat-icon">✓</div>50 Viral Hook Templates (Reels/TikTok)</div>
+          <div class="pkg-feat"><div class="feat-icon">✓</div>Reel & TikTok Script Pack (20 Scripts)</div>
+          <div class="pkg-feat"><div class="feat-icon">✓</div>Engagement Growth System</div>
+          <div class="pkg-feat"><div class="feat-icon">✓</div>Monetisation Starter Roadmap</div>
+          <div class="pkg-feat"><div class="feat-icon">✓</div>5 Platform Coverage</div>
+        </div>
+        <div class="pkg-cta"><a href="#" class="cta-btn filled">GET BLAZE →</a></div>
+      </div>
+
+      <!-- INFERNO -->
+      <div class="pkg-card reveal reveal-delay-2">
+        <div class="pkg-top">
+          <div class="pkg-tier">TIER 03 — DOMINATION</div>
+          <div class="pkg-name pink">INFERNO</div>
+          <div class="pkg-tagline">The complete brand domination kit. For those who are serious about building a real business online.</div>
+          <div class="pkg-price">
+            <span class="pkg-price-curr">R</span>
+            <span class="pkg-price-amt">2,999</span>
+          </div>
+          <div class="pkg-price-note">ONE-TIME PAYMENT · INSTANT DOWNLOAD</div>
+        </div>
+        <div class="pkg-divider"></div>
+        <div class="pkg-features">
+          <div class="pkg-feat"><div class="feat-icon">✓</div>Everything in BLAZE</div>
+          <div class="pkg-feat"><div class="feat-icon">✓</div>Full Brand Voice & Identity Guide</div>
+          <div class="pkg-feat"><div class="feat-icon">✓</div>6-Month Content Domination Roadmap</div>
+          <div class="pkg-feat"><div class="feat-icon">✓</div>500+ Caption & Hook Mega Library</div>
+          <div class="pkg-feat"><div class="feat-icon">✓</div>Brand Deal & Sponsorship Pitch Pack</div>
+          <div class="pkg-feat"><div class="feat-icon">✓</div>Influencer Rate Card Template</div>
+          <div class="pkg-feat"><div class="feat-icon">✓</div>Analytics Tracking Dashboard Template</div>
+          <div class="pkg-feat"><div class="feat-icon">✓</div>All 8 Platforms Covered</div>
+          <div class="pkg-feat"><div class="feat-icon">✓</div>60-Min 1-on-1 Strategy Call</div>
+          <div class="pkg-feat"><div class="feat-icon">✓</div>Lifetime Updates Included</div>
+        </div>
+        <div class="pkg-cta"><a href="#" class="cta-btn">GET INFERNO →</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT'S INSIDE -->
+<section class="section" id="inside">
+  <div class="section-inner">
+    <div class="s-tag">WHAT YOU GET</div>
+    <div class="s-title">INSIDE EVERY<br>PACKAGE.</div>
+    <div class="inside-grid">
+      <div class="inside-card reveal">
+        <div class="inside-num">01</div>
+        <span class="inside-icon">📅</span>
+        <div class="inside-title">CONTENT CALENDARS</div>
+        <div class="inside-desc">Pre-planned, ready-to-use monthly and quarterly calendars so you never wonder what to post again.</div>
+      </div>
+      <div class="inside-card reveal reveal-delay-1">
+        <div class="inside-num">02</div>
+        <span class="inside-icon">✍️</span>
+        <div class="inside-title">CAPTION SWIPE FILES</div>
+        <div class="inside-desc">Hundreds of high-converting captions across every niche. Copy, customise, post. Done.</div>
+      </div>
+      <div class="inside-card reveal reveal-delay-2">
+        <div class="inside-num">03</div>
+        <span class="inside-icon">🎣</span>
+        <div class="inside-title">VIRAL HOOK TEMPLATES</div>
+        <div class="inside-desc">The first 3 seconds decide everything. Our hooks are designed to stop the scroll and demand attention.</div>
+      </div>
+      <div class="inside-card reveal reveal-delay-3">
+        <div class="inside-num">04</div>
+        <span class="inside-icon">📈</span>
+        <div class="inside-title">GROWTH STRATEGIES</div>
+        <div class="inside-desc">Platform-specific, proven blueprints that work right now — not 3 years ago. Updated regularly.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="section how-section" id="how">
+  <div class="section-inner">
+    <div class="s-tag">THE PROCESS</div>
+    <div class="s-title">4 STEPS TO<br>UNSTOPPABLE GROWTH.</div>
+    <div class="how-steps">
+      <div class="how-step reveal">
+        <div class="step-circle active">01</div>
+        <div class="step-title">CHOOSE YOUR PACKAGE</div>
+        <div class="step-desc">Pick the level that matches your ambition. All packages are one-time payments with instant access.</div>
+      </div>
+      <div class="how-step reveal reveal-delay-1">
+        <div class="step-circle">02</div>
+        <div class="step-title">DOWNLOAD INSTANTLY</div>
+        <div class="step-desc">Your complete growth toolkit lands in your inbox the second payment is confirmed. No delays.</div>
+      </div>
+      <div class="how-step reveal reveal-delay-2">
+        <div class="step-circle">03</div>
+        <div class="step-title">EXECUTE THE SYSTEM</div>
+        <div class="step-desc">Follow the done-for-you strategy. Use the templates, post with purpose, engage with intention.</div>
+      </div>
+      <div class="how-step reveal reveal-delay-3">
+        <div class="step-circle">04</div>
+        <div class="step-title">WATCH THE NUMBERS CLIMB</div>
+        <div class="step-desc">Track your growth with our analytics template. Most clients see measurable results within 2 weeks.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESULTS -->
+<section class="section results-section" id="results">
+  <div class="section-inner">
+    <div class="s-tag">PROOF</div>
+    <div class="s-title">THE RESULTS<br>SPEAK.</div>
+    <div class="results-grid">
+      <div class="result-card big reveal">
+        <div class="result-stat">
+          <div class="r-stat-num">+14K</div>
+          <div class="r-stat-label">FOLLOWERS IN 90 DAYS</div>
+        </div>
+        <div class="result-stars">★★★★★</div>
+        <div class="result-quote">"I had been posting for 2 years and barely hit 600 followers. Within 6 weeks of using the BLAZE pack I had over 14,000. The viral hook templates alone changed everything — my first reel using one hit 180,000 views. I've never experienced anything like this. GROWW is the real deal."</div>
+        <div class="result-author">
+          <div class="author-av av-purple">TM</div>
+          <div class="author-info">
+            <div class="author-name">Thandi Mokoena</div>
+            <div class="author-sub">@thandimakesbeauty · Beauty Creator · Joburg</div>
+          </div>
+        </div>
+      </div>
+      <div class="result-card reveal reveal-delay-1">
+        <div class="result-stars">★★★★★</div>
+        <div class="result-quote result-quote sm">"As a small business owner I had no marketing budget. The SPARK pack gave me a full strategy. My Instagram enquiries tripled in one month."</div>
+        <div class="result-author">
+          <div class="author-av av-lime">KD</div>
+          <div class="author-info">
+            <div class="author-name">Kagiso Dlamini</div>
+            <div class="author-sub">@kdezignstudio · Graphic Designer</div>
+          </div>
+        </div>
+      </div>
+      <div class="result-card reveal reveal-delay-2">
+        <div class="result-stars">★★★★★</div>
+        <div class="result-quote result-quote sm">"I used the TikTok scripts from INFERNO and my account went from 200 followers to 31,000 in 5 weeks. The pitch templates helped me land my first brand deal too."</div>
+        <div class="result-author">
+          <div class="author-av av-cyan">SN</div>
+          <div class="author-info">
+            <div class="author-name">Sipho Nkosi</div>
+            <div class="author-sub">@siphotalks · Lifestyle Creator · Cape Town</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PLATFORMS -->
+<section class="section platforms-section">
+  <div class="section-inner">
+    <div class="s-tag">PLATFORMS</div>
+    <div class="s-title">WE COVER<br>THEM ALL.</div>
+    <div class="platforms-grid">
+      <div class="platform reveal"><span class="platform-emoji">📸</span><span class="platform-name">Instagram</span></div>
+      <div class="platform reveal reveal-delay-1"><span class="platform-emoji">🎵</span><span class="platform-name">TikTok</span></div>
+      <div class="platform reveal reveal-delay-2"><span class="platform-emoji">▶️</span><span class="platform-name">YouTube</span></div>
+      <div class="platform reveal reveal-delay-3"><span class="platform-emoji">👔</span><span class="platform-name">LinkedIn</span></div>
+      <div class="platform reveal"><span class="platform-emoji">𝕏</span><span class="platform-name">Twitter / X</span></div>
+      <div class="platform reveal reveal-delay-1"><span class="platform-emoji">📘</span><span class="platform-name">Facebook</span></div>
+      <div class="platform reveal reveal-delay-2"><span class="platform-emoji">📌</span><span class="platform-name">Pinterest</span></div>
+      <div class="platform reveal reveal-delay-3"><span class="platform-emoji">🧵</span><span class="platform-name">Threads</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="cta-bg"></div>
+  <div class="cta-grid"></div>
+  <div class="cta-inner reveal">
+    <div class="cta-title">YOUR AUDIENCE<br><span style="background:linear-gradient(135deg,var(--lime),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">IS WAITING.</span><br>ARE YOU?</div>
+    <p class="cta-desc">Every day you post without a strategy is a day your competitors pull ahead. The tools are here. The system is proven. All you have to do is start.</p>
+    <div class="cta-btns">
+      <a href="#packages" class="btn-glow">GET YOUR PACKAGE NOW →</a>
+      <a href="#results" class="btn-ghost">SEE MORE RESULTS</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-logo">GROWW</div>
+      <p class="footer-desc">The #1 social media growth system for businesses, influencers and personal brands who are serious about results.</p>
+      <div class="footer-socials">
+        <div class="social-btn">📸</div>
+        <div class="social-btn">🎵</div>
+        <div class="social-btn">𝕏</div>
+        <div class="social-btn">📘</div>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h5>PACKAGES</h5>
+      <ul>
+        <li><a href="#">Spark — R499</a></li>
+        <li><a href="#">Blaze — R1,299</a></li>
+        <li><a href="#">Inferno — R2,999</a></li>
+        <li><a href="#">Free Resources</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>COMPANY</h5>
+      <ul>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Results</a></li>
+        <li><a href="#">Blog</a></li>
+        <li><a href="#">Contact Us</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>LEGAL</h5>
+      <ul>
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">Terms of Use</a></li>
+        <li><a href="#">Refund Policy</a></li>
+        <li><a href="#">Disclaimer</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 GROWW. ALL RIGHTS RESERVED.</p>
+    <p>BUILT FOR CREATORS WHO MEAN BUSINESS.</p>
+  </div>
+</footer>
+
+<script>
+// Cursor
+const cur=document.getElementById('cur'),cur2=document.getElementById('cur2');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{
+  mx=e.clientX;my=e.clientY;
+  cur.style.left=(mx-4)+'px';cur.style.top=(my-4)+'px';
+});
+(function loop(){rx+=(mx-rx)*.1;ry+=(my-ry)*.1;cur2.style.left=(rx-16)+'px';cur2.style.top=(ry-16)+'px';requestAnimationFrame(loop);})();
+
+// Scroll reveal
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in');});
+},{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+// Counter
+function count(id,end,suffix,dur){
+  const el=document.getElementById(id);
+  if(!el)return;
+  let s=0,step=end/(dur/16);
+  const t=setInterval(()=>{
+    s=Math.min(s+step,end);
+    el.textContent=Math.floor(s).toLocaleString()+suffix;
+    if(s>=end)clearInterval(t);
+  },16);
+}
+setTimeout(()=>{
+  count('cnt1',1240,'+',1800);
+  setTimeout(()=>{document.getElementById('cnt2').textContent='4.2M+';},1800);
+  count('cnt3',98,'%',1600);
+},800);
+</script>
+</body>
+</html>
